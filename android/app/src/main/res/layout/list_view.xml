@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/view_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="8"
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:paddingBottom="2.5dp"
+            >
+            <!-- New views will be added here at runtime -->
+        </LinearLayout>
+<!--        android:weightSum="8"-->
+        <LinearLayout
+            android:id="@+id/view_container1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="8"
+            android:paddingTop="2.5dp"
+            android:paddingBottom="5dp"
+            >
+            <!-- New views will be added here at runtime -->
+        </LinearLayout>
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/view_container2"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:weightSum="7"-->
+<!--            android:paddingTop="2.5dp"-->
+<!--            android:paddingBottom="5dp"-->
+<!--            >-->
+<!--            &lt;!&ndash; New views will be added here at runtime &ndash;&gt;-->
+<!--        </LinearLayout>-->
+
+
+        </LinearLayout>
+
+</RelativeLayout>
