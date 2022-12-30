@@ -1,6 +1,8 @@
 import 'dart:ui';
 
+import 'package:app_lock_flutter/executables/controllers/method_channel_controller.dart';
 import 'package:app_lock_flutter/executables/controllers/password_controller.dart';
+import 'package:app_lock_flutter/widgets/confirmation_dialog.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -20,25 +22,15 @@ class UnlockedAppScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
-        leading: Padding(
-          padding: const EdgeInsets.all(14.0),
-          child: Image.asset(
-            "assets/images/appLogo.png",
-          ),
-        ),
-        centerTitle: true,
-        title: Text(
-          "AppLock",
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                color: Colors.white,
-              ),
-        ),
-        actions: [
-          Padding(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).backgroundColor,
+          leading: Padding(
             padding: const EdgeInsets.all(6.0),
             child: Container(
               decoration: BoxDecoration(
@@ -50,71 +42,117 @@ class UnlockedAppScreen extends StatelessWidget {
                 ),
               ),
               child: IconButton(
-                onPressed: () {
-                  if (Get.find<PasswordController>()
-                      .prefs
-                      .containsKey(AppConstants.setPassCode)) {
-                    showComfirmPasswordDialog(context).then((value) {
-                      if (value as bool) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SetPasscode(),
-                          ),
-                        );
-                      }
-                    });
-                  } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SetPasscode(),
-                      ),
-                    );
-                  }
+                padding: const EdgeInsets.all(0.0),
+                onPressed: () async {
+                  await showGeneralDialog(
+                    barrierColor: Colors.black.withOpacity(0.8),
+                    context: context,
+                    barrierDismissible: false,
+                    barrierLabel: MaterialLocalizations.of(context)
+                        .modalBarrierDismissLabel,
+                    transitionDuration: const Duration(milliseconds: 200),
+                    pageBuilder: (context, animation1, animation2) {
+                      return const ConfirmationDialog(
+                          heading: "Stop",
+                          bodyText: "Sure you want to stop AppLock");
+                    },
+                  ).then((value) {
+                    if (value as bool) {
+                      Get.find<MethodChannelController>().stopForeground();
+                    }
+                  });
                 },
                 icon: Icon(
-                  Icons.key,
+                  Icons.disabled_by_default_rounded,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: Theme.of(context).primaryColorDark,
-                ),
-              ),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return const SearchPage();
-                      },
-                    ),
-                  );
-                },
-                icon: const Icon(
-                  Icons.search,
+          centerTitle: true,
+          title: Text(
+            "AppLock",
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
                   color: Colors.white,
+                ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  // color: Theme.of(context).primaryColorDark,
+                  borderRadius: BorderRadius.circular(10),
+                  // ignore: prefer_const_literals_to_create_immutables
+                  border: Border.all(
+                    color: Theme.of(context).primaryColorDark,
+                  ),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    if (Get.find<PasswordController>()
+                        .prefs
+                        .containsKey(AppConstants.setPassCode)) {
+                      showComfirmPasswordDialog(context).then((value) {
+                        if (value as bool) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SetPasscode(),
+                            ),
+                          );
+                        }
+                      });
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SetPasscode(),
+                        ),
+                      );
+                    }
+                  },
+                  icon: Icon(
+                    Icons.key,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          SizedBox(
-            height: double.infinity,
-            width: size.width,
-            child: Expanded(
+            Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Theme.of(context).primaryColorDark,
+                  ),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return const SearchPage();
+                        },
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        body: Stack(
+          children: [
+            SizedBox(
+              height: double.infinity,
+              width: size.width,
               child: GetBuilder<AppsController>(
                 builder: (appsController) {
                   if (appsController.unLockList.isEmpty) {
@@ -277,22 +315,22 @@ class UnlockedAppScreen extends StatelessWidget {
                 },
               ),
             ),
-          ),
-          GetBuilder<AppsController>(
-              id: Get.find<AppsController>().addRemoveToUnlockUpdate,
-              builder: (state) {
-                return state.addToAppsLoading
-                    ? BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
-                        child: const Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
+            GetBuilder<AppsController>(
+                id: Get.find<AppsController>().addRemoveToUnlockUpdate,
+                builder: (state) {
+                  return state.addToAppsLoading
+                      ? BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ),
                           ),
-                        ),
-                      )
-                    : const SizedBox();
-              }),
-        ],
+                        )
+                      : const SizedBox();
+                }),
+          ],
+        ),
       ),
     );
   }

@@ -22,6 +22,7 @@ class ForegroundService : Service() {
     var isTimerStarted = false
     var timerReload:Long = 500
     var currentAppActivityList = arrayListOf<String>()
+    private var mHomeWatcher = HomeWatcher(this)
 
     override fun onCreate() {
         super.onCreate()
@@ -48,7 +49,6 @@ class ForegroundService : Service() {
 
     private fun startMyOwnForeground() {
         val window = Window(this)
-        val mHomeWatcher = HomeWatcher(this)
         mHomeWatcher.setOnHomePressedListener(object : HomeWatcher.OnHomePressedListener {
             override fun onHomePressed() {
                 println("onHomePressed")
@@ -69,6 +69,11 @@ class ForegroundService : Service() {
         timerRun(window)
     }
 
+    override fun onDestroy() {
+        timer.cancel()
+        mHomeWatcher.stopWatch()
+        super.onDestroy()
+    }
 
     private fun timerRun(window:Window){
         timer.scheduleAtFixedRate(object : TimerTask() {

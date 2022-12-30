@@ -82,19 +82,32 @@ class MethodChannelController extends GetxController implements GetxService {
     }
   }
 
+  Future stopForeground() async {
+    try {
+      await platform.invokeMethod('stopForeground', "").then((value) {
+        log("$value", name: "stopForeground CALLED");
+      });
+    } on PlatformException catch (e) {
+      log("Failed to Invoke: '${e.message}'.");
+    }
+  }
+
   Future<bool> askNotificationPermission() async {
     // await AppSettings.openAppSettings();
     await Get.find<PermissionController>()
         .getPermission(Permission.notification);
-    return isNotificationPermissionGiven =
-        await Permission.notification.isGranted;
+    isNotificationPermissionGiven = await Permission.notification.isGranted;
+    update();
+    return isNotificationPermissionGiven;
   }
 
   Future<bool> askOverlayPermission() async {
     try {
       return await platform.invokeMethod('askOverlayPermission').then((value) {
         log("$value", name: "askOverlayPermission");
-        return (value as bool);
+        isOverlayPermissionGiven = (value as bool);
+        update();
+        return isOverlayPermissionGiven;
       });
     } on PlatformException catch (e) {
       log("Failed to Invoke: '${e.message}'.");

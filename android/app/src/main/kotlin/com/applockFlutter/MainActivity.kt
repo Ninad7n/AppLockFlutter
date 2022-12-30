@@ -9,10 +9,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.provider.Settings
 import androidx.core.content.ContextCompat
@@ -51,6 +47,9 @@ class MainActivity: FlutterActivity() {
                 }
                 call.method.equals("checkOverlayPermission") -> {
                     result.success(Settings.canDrawOverlays(this))
+                }
+                call.method.equals("stopForeground") -> {
+                    stopForegroundService()
                 }
                 call.method.equals("askOverlayPermission") -> {
                     result.success(checkOverlayPermission())
@@ -105,26 +104,15 @@ class MainActivity: FlutterActivity() {
         return "Success"
     }
 
-
-
-    private fun drawableToBitmap(drawable: Drawable): Bitmap? {
-        if (drawable is BitmapDrawable) return (drawable).bitmap
-        val bitmap: Bitmap = Bitmap.createBitmap(
-                drawable.intrinsicWidth,
-                drawable.intrinsicHeight,
-                Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
-        return bitmap
-    }
-
     private fun startForegroundService() {
         if (Settings.canDrawOverlays(this)) {
             ContextCompat.startForegroundService(this, Intent(this, ForegroundService::class.java))
         }
     }
+
+   private fun stopForegroundService(){
+       stopService( Intent(this, ForegroundService::class.java))
+   }
 
     private fun checkOverlayPermission():Boolean {
         if (!Settings.canDrawOverlays(this)) {
