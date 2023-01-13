@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 import 'package:device_apps/device_apps.dart';
@@ -9,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_lock_flutter/executables/controllers/method_channel_controller.dart';
 import 'package:app_lock_flutter/services/constant.dart';
 import '../../models/application_model.dart';
-import '../../models/saved_q_a_model.dart';
 
 class AppsController extends GetxController implements GetxService {
   SharedPreferences prefs;
@@ -24,7 +22,6 @@ class AppsController extends GetxController implements GetxService {
   List<ApplicationDataModel> searchedApps = [];
   List<ApplicationDataModel> lockList = [];
   List<String> selectLockList = [];
-  SavedQaModel? savedQaData;
   bool addToAppsLoading = false;
 
   List<String> excludedApps = ["com.android.settings"];
@@ -32,11 +29,6 @@ class AppsController extends GetxController implements GetxService {
   int appSearchUpdate = 1;
   int addRemoveToUnlockUpdate = 2;
   int addRemoveToUnlockUpdateSearch = 3;
-
-  saveQA(SavedQaModel data) {
-    prefs.setString(AppConstants.saveQa, jsonEncode(data.toJson()));
-    log("${prefs.getString(AppConstants.saveQa)}", name: "saveQA");
-  }
 
   changeQuestionIndex(index) {
     selectQuestion = index;
@@ -47,11 +39,6 @@ class AppsController extends GetxController implements GetxService {
     selectQuestion = null;
     typeAnswer.clear();
     checkAnswer.clear();
-  }
-
-  SavedQaModel? getQA() {
-    log("${prefs.getString(AppConstants.saveQa)}", name: "saveQA");
-    return saveQaModelFromJson(prefs.getString(AppConstants.saveQa) ?? "");
   }
 
   savePasscode(counter) {

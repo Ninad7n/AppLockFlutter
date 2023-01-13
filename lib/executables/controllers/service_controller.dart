@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:image_picker/image_picker.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 enum GetImageType { camera, gallery }
@@ -49,6 +49,7 @@ class ServiceController {
       initialTime: TimeOfDay.now(),
       initialEntryMode: TimePickerEntryMode.dial,
     );
+    // ignore: use_build_context_synchronously
     return timeOfDay!.format(context);
   }
 
