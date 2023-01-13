@@ -22,12 +22,12 @@ import java.util.*
 class MainActivity: FlutterActivity() {
     private val channel = "flutter.native/helper"
     private var appInfo: List<ApplicationInfo>? = null
-    var lockedAppList: List<ApplicationInfo> = emptyList()
-//    lateinit var mAdView : AdView
+    private var lockedAppList: List<ApplicationInfo> = emptyList()
+    private var saveAppData: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        saveAppData =  applicationContext.getSharedPreferences("save_app_data", Context.MODE_PRIVATE)
         GeneratedPluginRegistrant.registerWith(FlutterEngine(this))
         MethodChannel(flutterEngine!!.dartExecutor.binaryMessenger, channel).setMethodCallHandler { call, result ->
             when {
@@ -39,8 +39,7 @@ class MainActivity: FlutterActivity() {
                 }
                 call.method.equals("setPasswordInNative") -> {
                     val args = call.arguments
-                    val saveAppData: SharedPreferences = applicationContext.getSharedPreferences("save_app_data", Context.MODE_PRIVATE)
-                    val editor: SharedPreferences.Editor =   saveAppData.edit()
+                    val editor: SharedPreferences.Editor =   saveAppData!!.edit()
                     editor.putString("password", "$args")
                     editor.apply()
                     result.success("Success")
@@ -93,8 +92,7 @@ class MainActivity: FlutterActivity() {
             packageData = ogList + element.packageName
         }
 
-        val saveAppData: SharedPreferences = applicationContext.getSharedPreferences("save_app_data", Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor =  saveAppData.edit()
+        val editor: SharedPreferences.Editor =  saveAppData!!.edit()
         editor.remove("app_data")
         editor.putString("app_data", "$packageData")
         editor.apply()
@@ -104,13 +102,21 @@ class MainActivity: FlutterActivity() {
         return "Success"
     }
 
+    private fun setIfServiceClosed(data:String){
+        val editor: SharedPreferences.Editor =  saveAppData!!.edit()
+        editor.putString("is_stopped",data)
+        editor.apply()
+    }
+
     private fun startForegroundService() {
         if (Settings.canDrawOverlays(this)) {
+            setIfServiceClosed("1")
             ContextCompat.startForegroundService(this, Intent(this, ForegroundService::class.java))
         }
     }
 
    private fun stopForegroundService(){
+       setIfServiceClosed("0")
        stopService( Intent(this, ForegroundService::class.java))
    }
 
