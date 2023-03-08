@@ -26,7 +26,7 @@ class ForegroundService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        val channelId = "Switchup-10"
+        val channelId = "AppLock-10"
         val channel = NotificationChannel(
             channelId,
             "Channel human readable title",
