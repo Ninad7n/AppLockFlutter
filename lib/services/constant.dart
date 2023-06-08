@@ -6,8 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:html/parser.dart';
 
-///Extensions
-
 extension CapExtension on String {
   String get inCaps =>
       length > 0 ? '${this[0].toUpperCase()}${substring(1)}' : '';
@@ -111,7 +109,6 @@ String getStringFromList(var data) {
     // log(toReturn);
     toReturn = toReturn.substring(0, toReturn.length - 2);
     // log(toReturn);
-
   } else {
     toReturn = data.first.name;
   }
