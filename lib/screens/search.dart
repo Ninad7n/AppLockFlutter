@@ -181,7 +181,7 @@ class _SearchPageState extends State<SearchPage> {
                                 ),
                               ),
                               GetBuilder<AppsController>(
-                                builder: (switchUpController) {
+                                builder: (appLockCtrl) {
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 10,
