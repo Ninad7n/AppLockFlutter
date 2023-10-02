@@ -29,16 +29,13 @@ class CustomTheme {
     useMaterial3: true,
     scaffoldBackgroundColor: backgroundDark,
     hintColor: Colors.grey[200],
-    primarySwatch: colorCustom,
     canvasColor: secondaryColor,
     // primaryColorLight: secondaryColor,
     splashColor: secondaryColor,
     shadowColor: Colors.grey[600],
-    backgroundColor: backgroundDark,
     cardColor: const Color(0xFFFFFFFF),
     primaryColor: primaryColor,
     dividerColor: const Color(0xFF2A2A2A),
-    errorColor: const Color(0xFFCF6679),
     primaryColorDark: secondaryColor,
 
     // iconTheme: IconThemeData(color: Colors.grey[500]),
@@ -84,5 +81,8 @@ class CustomTheme {
       headline5: GoogleFonts.epilogue(),
       headline6: GoogleFonts.epilogue(),
     ),
+    colorScheme: ColorScheme.fromSwatch(primarySwatch: colorCustom)
+        .copyWith(background: backgroundDark)
+        .copyWith(error: const Color(0xFFCF6679)),
   );
 }
