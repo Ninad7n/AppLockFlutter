@@ -1,0 +1,51 @@
+name: CI
+on:
+  pull_request:
+    branches:
+      - master
+      # - testing
+  push:
+    branches:
+      - master
+      # - testing
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '3.13.6'
+          channel: 'stable'
+      - run: flutter doctor
+      - run: flutter pub get
+      ## - run: flutter test
+      ## build and upload production apk
+      - run: flutter build apk --release
+      - uses: actions/upload-artifact@v3
+        with:
+          name: production-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+      # build and upload development apk
+      # - run: flutter build apk --debug
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: development-apk
+      #     path: build/app/outputs/flutter-apk/app-debug.apk
+      # build and upload development abb
+      # - run: flutter build appbundle --flavor production -t lib/main_production.dart
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: development-abb
+      #     path: build/app/outputs/bundle/production/Release/app-production-release.aab
+      # push artifatcs to release
+      - name: Push to Releases
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/flutter-apk/*"
+          tag: v1.0.${{ github.run_number }}
+          token: ${{ secrets.GITHUB_TOKEN }}
