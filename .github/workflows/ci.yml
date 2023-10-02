@@ -2,11 +2,11 @@ name: CI
 on:
   pull_request:
     branches:
-      - master
+      - main
       # - testing
   push:
     branches:
-      - master
+      - main
       # - testing
 jobs:
   build:
