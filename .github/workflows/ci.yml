@@ -25,11 +25,11 @@ jobs:
       - run: flutter pub get
       ## - run: flutter test
       ## build and upload production apk
-      - run: flutter build apk --release
-      - uses: actions/upload-artifact@v3
-        with:
-          name: production-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+      # - run: flutter build apk --release
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: production-apk
+      #     path: build/app/outputs/flutter-apk/app-release.apk
       # build and upload development apk
       - run: flutter build apk --debug
       - uses: actions/upload-artifact@v3
