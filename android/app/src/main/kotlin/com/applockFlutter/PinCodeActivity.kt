@@ -9,7 +9,7 @@ import com.applockFlutter.R
 
 
 class PinCodeActivity(
-        private val context: Context
+        context: Context
 ) {
 
     var pinCode: String = ""

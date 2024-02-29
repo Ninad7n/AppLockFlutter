@@ -18,9 +18,9 @@ class ForegroundService : Service() {
     override fun onBind(intent: Intent): IBinder? {
         throw UnsupportedOperationException("")
     }
-    var timer: Timer = Timer()
+    private var timer: Timer = Timer()
     var isTimerStarted = false
-    var timerReload:Long = 500
+    private var timerReload:Long = 500
     var currentAppActivityList = arrayListOf<String>()
     private var mHomeWatcher = HomeWatcher(this)
 

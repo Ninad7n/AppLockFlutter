@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.applockFlutter
 
 import android.content.BroadcastReceiver
@@ -7,9 +9,9 @@ import android.content.IntentFilter
 import android.util.Log
 
 class HomeWatcher(private val mContext: Context) {
-    private val mFilter: IntentFilter
+    private val mFilter: IntentFilter = IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
     private var mListener: OnHomePressedListener? = null
-    public var mReceiver: InnerReceiver? = null
+    private var mReceiver: InnerReceiver? = null
 
     fun setOnHomePressedListener(listener: OnHomePressedListener?) {
         mListener = listener
@@ -35,9 +37,9 @@ class HomeWatcher(private val mContext: Context) {
 
 
     inner class InnerReceiver : BroadcastReceiver() {
-        val SYSTEM_DIALOG_REASON_KEY = "reason"
-        val SYSTEM_DIALOG_REASON_RECENT_APPS = "recentapps"
-        val SYSTEM_DIALOG_REASON_HOME_KEY = "homekey"
+        private val SYSTEM_DIALOG_REASON_KEY = "reason"
+        private val SYSTEM_DIALOG_REASON_RECENT_APPS = "recentapps"
+        private val SYSTEM_DIALOG_REASON_HOME_KEY = "homekey"
         override fun onReceive(context: Context, intent: Intent) {
             val action = intent.action
             if (action == Intent.ACTION_CLOSE_SYSTEM_DIALOGS) {
@@ -60,7 +62,4 @@ class HomeWatcher(private val mContext: Context) {
         const val TAG = "hg"
     }
 
-    init {
-        mFilter = IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
-    }
 }

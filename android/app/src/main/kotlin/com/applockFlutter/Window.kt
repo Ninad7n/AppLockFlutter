@@ -1,5 +1,6 @@
 package com.applockFlutter
 
+import PinCodeActivity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
@@ -13,7 +14,6 @@ import androidx.core.content.ContextCompat
 import com.andrognito.pinlockview.IndicatorDots
 import com.andrognito.pinlockview.PinLockListener
 import com.andrognito.pinlockview.PinLockView
-import com.applockFlutter.R
 
 
 @SuppressLint("InflateParams")

@@ -19,6 +19,7 @@ import io.flutter.plugins.GeneratedPluginRegistrant
 import java.util.*
 
 
+@Suppress("UNCHECKED_CAST")
 class MainActivity: FlutterActivity() {
     private val channel = "flutter.native/helper"
     private var appInfo: List<ApplicationInfo>? = null
