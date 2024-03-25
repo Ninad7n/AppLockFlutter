@@ -83,7 +83,7 @@ class _CustomDialogsState extends State<CustomDialogs> {
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(110, 38),
                       elevation: 0,
-                      primary: Colors.grey[300],
+                      backgroundColor: Colors.grey[300],
                       padding: const EdgeInsets.symmetric(horizontal: 18),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -107,7 +107,7 @@ class _CustomDialogsState extends State<CustomDialogs> {
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(110, 38),
                       elevation: 0,
-                      primary: Colors.red,
+                      backgroundColor: Colors.red,
                       padding: const EdgeInsets.symmetric(horizontal: 18),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
